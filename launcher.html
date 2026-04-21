@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>工具面板</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --accent1: #e8ff47;
+      --accent2: #47c8ff;
+      --accent3: #ff6b47;
+      --text: #f0f0f0;
+      --muted: #666;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Noto Sans TC', sans-serif;
+      overflow: hidden;
+    }
+
+    /* grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+
+    .panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 48px 40px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      width: min(420px, 90vw);
+      animation: fadeUp .6s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+    }
+
+    .label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -.01em;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      text-decoration: none;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .25s, color .25s;
+      animation: fadeUp .6s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    .btn:nth-child(1) { animation-delay: .1s; --accent: var(--accent1); }
+    .btn:nth-child(2) { animation-delay: .2s; --accent: var(--accent2); }
+    .btn:nth-child(3) { animation-delay: .3s; --accent: var(--accent3); }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: translateX(-101%);
+      transition: transform .3s cubic-bezier(.22,1,.36,1);
+      z-index: 0;
+    }
+
+    .btn:hover::after { transform: translateX(0); }
+    .btn:hover { color: #0d0d0d; border-color: var(--accent); }
+
+    .btn span, .btn svg { position: relative; z-index: 1; }
+
+    .btn svg {
+      width: 18px; height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      transition: transform .3s;
+    }
+
+    .btn:hover svg { transform: translate(3px, -3px); }
+
+    .dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+
+    .btn-inner { display: flex; align-items: center; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <div class="label">工具面板 / Launcher</div>
+    <div class="title">快速連結</div>
+
+    <button class="btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1Dl_aKl5Fv33KiKiYPPffTX7DYRb6M4wu-xGwD9z0oGA/edit?usp=sharing', 'win_settings')">
+      <span class="btn-inner"><span class="dot" style="--accent:var(--accent2)"></span>設定</span>
+      <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+    </button>
+	
+    <button class="btn" onclick="window.open('https://char0804.app.n8n.cloud/form/5cc01406-a512-4e06-99c4-e4d116d4924c', 'win_update')">
+      <span class="btn-inner"><span class="dot" style="--accent:var(--accent1)"></span>更新</span>
+      <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+    </button>
+
+    <button class="btn" onclick="window.open('https://chary0804.github.io/off_days_viewer.html', 'win_test')">
+      <span class="btn-inner"><span class="dot" style="--accent:var(--accent3)"></span>測試</span>
+      <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+    </button>
+  </div>
+</body>
+</html>
